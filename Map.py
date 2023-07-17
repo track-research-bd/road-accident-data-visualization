@@ -225,20 +225,22 @@ if 'Accidents' in filtered_data:
         year_counts = filtered_data['year'].value_counts()
 
         # Get the count for the selected year
-        total_accidents = year_counts.get(y, 0)  # returns 0 if y is not in year_counts
+        #total_accidents = year_counts.get(y, 0)  # returns 0 if y is not in year_counts
 
-        # Get the count for the previous year
-        total_accidents_previous_year = year_counts.get(y - 1, 0)  # returns 0 if y-1 is not in year_counts
+        # Calculate total accidents over all years
+        total_accidents_all_years = year_counts.sum()
+        
+        # Now calculate difference in accidents for the selected year and the previous year
+        diff_accidents = year_counts[y] - year_counts.get(y-1, 0)
+        
 
-        # Calculate the difference in accidents from the previous year
-        diff_accidents = total_accidents - total_accidents_previous_year
 
         # Calculate total deaths
         total_deaths = filtered_data['Accidents'].sum()
 
         # Display the metrics
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Total accident", total_accidents, int(diff_accidents))
+        col1.metric("Total accident", total_accidents_all_years, int(diff_accidents))
         col2.metric("Total deaths", total_deaths, total_deaths)
         col3.metric("Total injured", "86%", "4 %")
         col4.metric("Highest accident location", "86%", "4 %")
