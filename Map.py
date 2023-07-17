@@ -221,7 +221,15 @@ if time_period == "Daily":
 
 if 'Accidents' in filtered_data:
     with row1_col3:
-        total_accidents = filtered_data.shape[0]
+        #total_accidents = filtered_data.shape[0]
+        # Count the number of rows for each year
+        year_counts = dff['year'].value_counts()
+        count_2020 = year_counts[2020]
+        # Get the count for 2021
+        count_2021 = year_counts[2021]
+        
+        total_accidents=year_counts[y]
+        diff_accidents=year_counts[y]-year_counts[y-1]
         total_deaths=filtered_data['Accidents'].sum()
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("Total accident", total_accidents, total_accidents)
