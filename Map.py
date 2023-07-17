@@ -389,23 +389,40 @@ else:
     st.error('No data found !')
 
 
-# Convert 'ACCIDENT Date' to datetime if it isn't already
-final_data['ACCIDENT Date'] = pd.to_datetime(final_data['ACCIDENT Date'])
+# Filter out data before 2020
+final_data = final_data[final_data['ACCIDENT Date'].dt.year >= 2020]
 
-# Group by date and calculate the sum of accidents
-daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
+# Add a 'year' column to the data
+final_data['year'] = final_data['ACCIDENT Date'].dt.year
 
-# Create the chart
-st.line_chart(daily_accidents.set_index('ACCIDENT Date'))
+# Create a radio button for selecting the chart type
+chart_type = st.radio("Select chart type:", ('Daily Accidents', 'Cumulative Accidents', 'Yearly Accidents'))
 
-# Calculate the cumulative sum of accidents
-daily_accidents['Cumulative Accidents'] = daily_accidents['Accidents'].cumsum()
+if chart_type == 'Daily Accidents':
+    # Group by date and calculate the sum of accidents
+    daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
+    st.line_chart(daily_accidents.set_index('ACCIDENT Date'))
 
-# Create the chart
-st.line_chart(daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
+elif chart_type == 'Cumulative Accidents':
+    # Group by date and calculate the sum of accidents
+    daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
+    # Calculate the cumulative sum of accidents
+    daily_accidents['Cumulative Accidents'] = daily_accidents['Accidents'].cumsum()
+    st.line_chart(daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
+
+elif chart_type == 'Yearly Accidents':
+    # Group by year and calculate the sum of accidents
+    yearly_accidents = final_data.groupby('year')['Accidents'].sum().reset_index()
+    st.bar_chart(yearly_accidents.set_index('year'))
+
+
 # Let the user select a date range
-start_date = st.date_input('Start date', daily_accidents['ACCIDENT Date'].min())
-end_date = st.date_input('End date', daily_accidents['ACCIDENT Date'].max())
+start_date = st.date_input('Start date', daily_accidents['ACCIDENT Date'].min().date())
+end_date = st.date_input('End date', daily_accidents['ACCIDENT Date'].max().date())
+
+# Convert the Python date object to pandas.Timestamp
+start_date = pd.Timestamp(start_date)
+end_date = pd.Timestamp(end_date)
 
 # Filter the data based on the selected range
 filtered_daily_accidents = daily_accidents[(daily_accidents['ACCIDENT Date'] >= start_date) & (daily_accidents['ACCIDENT Date'] <= end_date)]
@@ -413,5 +430,6 @@ filtered_daily_accidents = daily_accidents[(daily_accidents['ACCIDENT Date'] >= 
 # Create the charts
 st.line_chart(filtered_daily_accidents.set_index('ACCIDENT Date'))
 st.line_chart(filtered_daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
+
 
 
