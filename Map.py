@@ -256,7 +256,7 @@ if time_period == "Daily":
 
 
 if 'Accidents' in filtered_data:
-    with row1_col3:
+    with row1_col2:
         year_counts = final_data['year'].value_counts()
         # Calculate total accidents over all years
         total_accidents_all_years = year_counts.sum()
@@ -280,12 +280,23 @@ if 'Accidents' in filtered_data:
             
         # Get the location with the highest number of accidents
         highest_accident_location = final_data['LOCATION'].value_counts().index[0]
+        # Filter the data for the current year
+        filtered_data_current_year = final_data[final_data['year'] == y]
+        
+        # Get the location with the highest accidents for the current year
+        highest_accident_location_current_year = filtered_data_current_year['LOCATION'].value_counts().index[0]
+        
+        # Check if the location has changed
+        if highest_accident_location == highest_accident_location_current_year:
+            delta_location = "No change"
+        else:
+            delta_location = highest_accident_location_current_year
 
         # Display the metrics
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("Total accident", total_accidents_all_years, int(diff_accidents))
         col2.metric("Total deaths", total_deaths_all_years, int(diff_total_deaths))
-        col3.metric("Highest accident location", highest_accident_location, "+1") 
+        col3.metric("Highest accident location", highest_accident_location, delta_location)
         col4.metric("Total injured", "86%", "4 %")
 
 
