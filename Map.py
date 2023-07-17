@@ -22,14 +22,14 @@ st.set_page_config(layout="wide")
 #    open('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/bangladesh_geojson_adm2_64_districts_zillas.json', 'r'))
 
 # Get the json file from github
-url = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/blob/main/bangladesh_geojson_adm2_64_districts_zillas.json"
+url = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/bangladesh_geojson_adm2_64_districts_zillas.json"
 response = requests.get(url)
 # Decode the json file
 geojson_data = response.json()
 
 geojson_data['features'][61].keys()
 #dff = pd.read_csv('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/final_report.csv')
-urldff = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/blob/main/final_report.csv"
+urldff = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/final_report.csv"
 dff = pd.read_csv(urldff)
 
 
