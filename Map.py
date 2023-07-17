@@ -221,17 +221,16 @@ if time_period == "Daily":
 
 if 'Accidents' in filtered_data:
     with row1_col3:
-        # Count the number of rows for each year in filtered data
-        year_counts = filtered_data['year'].value_counts()
-
-        # Get the count for the selected year
-        #total_accidents = year_counts.get(y, 0)  # returns 0 if y is not in year_counts
-
+        year_counts = final_data['year'].value_counts()
+        
         # Calculate total accidents over all years
         total_accidents_all_years = year_counts.sum()
         
+        # Count the number of rows for each year in the filtered data
+        filtered_year_counts = filtered_data['year'].value_counts()
+        
         # Now calculate difference in accidents for the selected year and the previous year
-        diff_accidents = year_counts[y] - year_counts.get(y-1, 0)
+        diff_accidents = filtered_year_counts.get(y, 0) - filtered_year_counts.get(y-1, 0)
         
         # Calculate total deaths
         total_deaths = filtered_data['Accidents'].sum()
