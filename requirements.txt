@@ -1,8 +1,5 @@
-pip install plotly
-pip install numpy
-pip install streamlit
-pip install pydeck
-pip install plotly.express
-pip install plotly.io
-pip install matplotlib.animation
-pip install plotly.graph_objects 
+plotly~=5.6.0
+matplotlib~=3.5.0
+urllib3~=1.26.8
+json5~=0.9.6
+
