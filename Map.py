@@ -36,7 +36,13 @@ geojson_data['features'][61].keys()
 urldff = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/final_report.csv"
 dff = pd.read_csv(urldff)
 
-st.write(dff)
+#st.write(dff)
+st.download_button(
+    label="Download road accident data as CSV",
+    data=dff,
+    file_name="dfframe.csv",
+    mime="text/csv",
+)
 
 district_id_map = {}
 for feature in geojson_data["features"]:
