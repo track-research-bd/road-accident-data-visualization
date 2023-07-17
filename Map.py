@@ -27,11 +27,14 @@ response = requests.get(url)
 # Decode the json file
 geojson_data = response.json()
 
+st. json(geojson_data)
+
 geojson_data['features'][61].keys()
 #dff = pd.read_csv('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/final_report.csv')
 urldff = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/final_report.csv"
 dff = pd.read_csv(urldff)
 
+st.write(dff)
 
 district_id_map = {}
 for feature in geojson_data["features"]:
