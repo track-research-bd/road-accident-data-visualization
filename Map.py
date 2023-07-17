@@ -238,7 +238,7 @@ if 'Accidents' in filtered_data:
 
         # Display the metrics
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Total accident", total_accidents, diff_accidents)
+        col1.metric("Total accident", total_accidents, float(total_accidents))
         col2.metric("Total deaths", total_deaths, total_deaths)
         col3.metric("Total injured", "86%", "4 %")
         col4.metric("Highest accident location", "86%", "4 %")
