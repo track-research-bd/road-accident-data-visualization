@@ -221,21 +221,28 @@ if time_period == "Daily":
 
 if 'Accidents' in filtered_data:
     with row1_col3:
-        #total_accidents = filtered_data.shape[0]
-        # Count the number of rows for each year
-        year_counts = dff['year'].value_counts()
-        count_2020 = year_counts[2020]
-        # Get the count for 2021
-        count_2021 = year_counts[2021]
-        
-        total_accidents=year_counts[y]
-        diff_accidents=year_counts[y]-year_counts[y-1]
-        total_deaths=filtered_data['Accidents'].sum()
+        # Count the number of rows for each year in filtered data
+        year_counts = filtered_data['year'].value_counts()
+
+        # Get the count for the selected year
+        total_accidents = year_counts.get(y, 0)  # returns 0 if y is not in year_counts
+
+        # Get the count for the previous year
+        total_accidents_previous_year = year_counts.get(y - 1, 0)  # returns 0 if y-1 is not in year_counts
+
+        # Calculate the difference in accidents from the previous year
+        diff_accidents = total_accidents - total_accidents_previous_year
+
+        # Calculate total deaths
+        total_deaths = filtered_data['Accidents'].sum()
+
+        # Display the metrics
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Total accident", total_accidents, total_accidents)
+        col1.metric("Total accident", total_accidents, diff_accidents)
         col2.metric("Total deaths", total_deaths, total_deaths)
         col3.metric("Total injured", "86%", "4 %")
         col4.metric("Highest accident location", "86%", "4 %")
+
         st.markdown('</div>', unsafe_allow_html=True)
 
     with row7_col1:
