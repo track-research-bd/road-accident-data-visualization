@@ -170,13 +170,13 @@ def day_func(yy, mm, dd):
 
 if time_period == "Yearly":
     with row2_col1:
-        year = st.slider("Select year:", 2020, 2023, 2021)
+        year = st.slider("Select year:", 2020, 2023, 2020)
     y = year
     filtered_data = year_func(y)
 
 if time_period == "Monthly":
     with row2_col1:
-        year = st.slider("Select year:", 2020, 2023, 2021)
+        year = st.slider("Select year:", 2020, 2023, 2020)
     with row2_col2:
         month = st.slider("Select month:", 1, 12, 11)
     y = year
@@ -197,7 +197,7 @@ if time_period == "Weekly":
 
 if time_period == "Daily":
     with row4_col1:
-        year = st.slider("Select year:", 2020, 2023, 2021)
+        year = st.slider("Select year:", 2020, 2023, 2020)
     with row4_col2:
         month = st.slider("Select month:", 1, 12, 11)
     with row4_col3:
@@ -222,7 +222,7 @@ if time_period == "Daily":
 if 'Accidents' in filtered_data:
     with row1_col3:
         # Count the number of rows for each year in filtered data
-        year_counts = filtered_data['year'].value_counts()
+        year_counts = dff['year'].value_counts()
 
         # Get the count for the selected year
         #total_accidents = year_counts.get(y, 0)  # returns 0 if y is not in year_counts
