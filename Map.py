@@ -256,7 +256,7 @@ if time_period == "Daily":
 
 
 if 'Accidents' in filtered_data:
-    with row1_col2:
+    with row1_col3:
         year_counts = final_data['year'].value_counts()
         # Calculate total accidents over all years
         total_accidents_all_years = year_counts.sum()
