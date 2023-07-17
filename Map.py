@@ -416,6 +416,12 @@ elif chart_type == 'Yearly Accidents':
     st.bar_chart(yearly_accidents.set_index('year'))
 
 
+# Group by date and calculate the sum of accidents
+daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
+
+# Calculate the cumulative sum of accidents
+daily_accidents['Cumulative Accidents'] = daily_accidents['Accidents'].cumsum()
+
 # Let the user select a date range
 start_date = st.date_input('Start date', daily_accidents['ACCIDENT Date'].min().date())
 end_date = st.date_input('End date', daily_accidents['ACCIDENT Date'].max().date())
@@ -430,6 +436,5 @@ filtered_daily_accidents = daily_accidents[(daily_accidents['ACCIDENT Date'] >= 
 # Create the charts
 st.line_chart(filtered_daily_accidents.set_index('ACCIDENT Date'))
 st.line_chart(filtered_daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
-
 
 
