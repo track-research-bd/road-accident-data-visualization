@@ -86,7 +86,7 @@ elif chart_type == 'Vehicles Involved':
     vehicle_data = pd.concat([final_data['Vehicle 1'], final_data['Vehicle 2'], final_data['Vehicle 3']]).dropna()
     
     # Count the number of occurrences of each vehicle
-    vehicle_counts = vehicle_data.value_counts().sort_values(ascending=False)
+    vehicle_counts = vehicle_data.value_counts().sort_values()
 
     # Create a bar chart using Streamlit
     st.bar_chart(vehicle_counts)
