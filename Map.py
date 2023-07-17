@@ -83,7 +83,7 @@ elif chart_type == 'Yearly Deaths':
 
 elif chart_type == 'Vehicles Involved':
     # Combine the vehicle columns into a single series
-    vehicle_data = final_data[['Vehicle 1', 'Vehicle 2', 'Vehicle 3']].melt().dropna()['value']
+    vehicle_data = pd.concat([final_data['Vehicle 1'], final_data['Vehicle 2'], final_data['Vehicle 3']]).dropna()
     
     # Count the number of occurrences of each vehicle
     vehicle_counts = vehicle_data.value_counts().sort_values(ascending=False)
