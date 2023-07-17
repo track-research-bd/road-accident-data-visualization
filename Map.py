@@ -38,13 +38,13 @@ urldff = "https://raw.githubusercontent.com/track-research-bd/road-accident-data
 dff = pd.read_csv(urldff)
 
 #st.write(dff)
-csv = dff.to_csv(index=False)
-csv_str = StringIO(csv)
-csv_str.seek(0)
+# Assuming 'dff' is DataFrame
+csv = dff.to_csv(index=False).encode()  # convert DataFrame to CSV and then encode to utf-8
+
 st.download_button(
-    label="Download road accident data as CSV",
-    data=csv_str,
-    file_name="dfframe.csv",
+    label="Download data as CSV",
+    data=csv,
+    file_name="mydata.csv",
     mime="text/csv",
 )
 
