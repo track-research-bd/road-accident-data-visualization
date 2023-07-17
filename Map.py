@@ -37,9 +37,11 @@ urldff = "https://raw.githubusercontent.com/track-research-bd/road-accident-data
 dff = pd.read_csv(urldff)
 
 #st.write(dff)
+csv_str = StringIO(dff)
+csv_str.seek(0)
 st.download_button(
     label="Download road accident data as CSV",
-    data=dff,
+    data=csv_str,
     file_name="dfframe.csv",
     mime="text/csv",
 )
