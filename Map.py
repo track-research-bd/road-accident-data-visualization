@@ -388,7 +388,7 @@ if 'Accidents' in filtered_data:
 else:
     st.error('No data found !')
 
-
+final_data['ACCIDENT Date'] = pd.to_datetime(final_data['ACCIDENT Date'])
 # Filter out data before 2020
 final_data = final_data[final_data['ACCIDENT Date'].dt.year >= 2020]
 
