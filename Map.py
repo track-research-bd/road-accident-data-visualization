@@ -221,11 +221,13 @@ if time_period == "Daily":
 
 if 'Accidents' in filtered_data:
     with row1_col3:
-        total_accidents = filtered_data['Accidents'].sum()
-        col1, col2, col3 = st.columns(3)
+        total_accidents = filtered_data['Unnamed: 0.1'].count()
+        total_deaths=filtered_data['Accidents'].sum()
+        col1, col2, col3, col4 = st.columns(4)
         col1.metric("Total accident", total_accidents, total_accidents)
-        col2.metric("Highest accident location", "9 mph", "-8 %")
-        col3.metric("Humidity", "86%", "4 %")
+        col2.metric("Total deaths", total_deaths, total_deaths)
+        col3.metric("Total injured", "86%", "4 %")
+        col4.metric("Highest accident location", "86%", "4 %")
         st.markdown('</div>', unsafe_allow_html=True)
 
     with row7_col1:
