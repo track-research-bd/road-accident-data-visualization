@@ -51,6 +51,8 @@ dff['id'] = dff.District.apply(lambda x: district_id_map.get(x, default_value))
 #dff.to_csv('final_output.csv', index=False)
 final_data = copy.deepcopy(dff)
 
+
+
 ##### radio but to visualize the data
 final_data['ACCIDENT Date'] = pd.to_datetime(final_data['ACCIDENT Date'])
 # Filter out data before 2020
@@ -60,27 +62,34 @@ final_data = final_data[final_data['ACCIDENT Date'].dt.year >= 2020]
 final_data['year'] = final_data['ACCIDENT Date'].dt.year
 
 # Create a radio button for selecting the chart type
-chart_type = st.radio("Select chart type:", ('Daily Accidents', 'Cumulative Accidents', 'Yearly Accidents'))
+chart_type = st.radio("Select chart type:", ('Daily Deaths', 'Cumulative Deaths', 'Yearly Deaths', 'Vehicles Involved'))
 
-if chart_type == 'Daily Accidents':
+if chart_type == 'Daily Deaths':
     # Group by date and calculate the sum of accidents
     daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
     st.line_chart(daily_accidents.set_index('ACCIDENT Date'))
 
-elif chart_type == 'Cumulative Accidents':
+elif chart_type == 'Cumulative Deaths':
     # Group by date and calculate the sum of accidents
     daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
     # Calculate the cumulative sum of accidents
     daily_accidents['Cumulative Accidents'] = daily_accidents['Accidents'].cumsum()
     st.line_chart(daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
 
-elif chart_type == 'Yearly Accidents':
+elif chart_type == 'Yearly Deaths':
     # Group by year and calculate the sum of accidents
     yearly_accidents = final_data.groupby('year')['Accidents'].sum().reset_index()
     st.bar_chart(yearly_accidents.set_index('year'))
 
+elif chart_type == 'Vehicles Involved':
+    # Combine the vehicle columns into a single series
+    vehicle_data = final_data[['Vehicle 1', 'Vehicle 2', 'Vehicle 3']].melt().dropna()['value']
+    
+    # Count the number of occurrences of each vehicle
+    vehicle_counts = vehicle_data.value_counts().sort_values(ascending=False)
 
-
+    # Create a bar chart using Streamlit
+    st.bar_chart(vehicle_counts)
 
 # final_data
 
@@ -245,18 +254,13 @@ if time_period == "Daily":
 if 'Accidents' in filtered_data:
     with row1_col3:
         year_counts = final_data['year'].value_counts()
-        
         # Calculate total accidents over all years
         total_accidents_all_years = year_counts.sum()
-        
-        # Count the number of rows for each year in the filtered data
-        #filtered_year_counts = filtered_data['year'].value_counts()
-        
         if y != final_data['year'].min():
             diff_accidents = year_counts.get(y, 0) - year_counts.get(y-1, 0)
         else:
             diff_accidents = 0
-        
+            
         # Calculate total deaths
         total_deaths = filtered_data['Accidents'].sum()
 
