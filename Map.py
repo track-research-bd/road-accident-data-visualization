@@ -11,14 +11,18 @@ import pandas as pd
 import streamlit as st
 import pydeck as pdk
 import plotly.graph_objects as go
+import copy
 
 st.set_page_config(layout="wide")
 
 
+
 geojson_data = load(
-    open('bangladesh_geojson_adm2_64_districts_zillas.json', 'r'))
+    open('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/bangladesh_geojson_adm2_64_districts_zillas.json', 'r'))
 geojson_data['features'][61].keys()
-dff = pd.read_csv('final_report.csv')
+dff = pd.read_csv('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/final_report.csv')
+
+
 
 district_id_map = {}
 for feature in geojson_data["features"]:
@@ -27,8 +31,10 @@ for feature in geojson_data["features"]:
 
 default_value = None
 dff['id'] = dff.District.apply(lambda x: district_id_map.get(x, default_value))
-dff.to_csv('final_output.csv', index=False)
-final_data = pd.read_csv('final_output.csv')
+
+#dff.to_csv('final_output.csv', index=False)
+final_data = copy.deepcopy(dff)
+
 # final_data
 
 # -------------------dividing time period------------------------
