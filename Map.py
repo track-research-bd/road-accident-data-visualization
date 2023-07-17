@@ -227,10 +227,12 @@ if 'Accidents' in filtered_data:
         total_accidents_all_years = year_counts.sum()
         
         # Count the number of rows for each year in the filtered data
-        filtered_year_counts = filtered_data['year'].value_counts()
+        #filtered_year_counts = filtered_data['year'].value_counts()
         
-        # Now calculate difference in accidents for the selected year and the previous year
-        diff_accidents = filtered_year_counts.get(y, 0) - filtered_year_counts.get(y-1, 0)
+        if y != final_data['year'].min():
+            diff_accidents = year_counts.get(y, 0) - year_counts.get(y-1, 0)
+        else:
+            diff_accidents = 0
         
         # Calculate total deaths
         total_deaths = filtered_data['Accidents'].sum()
