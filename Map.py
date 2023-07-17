@@ -38,15 +38,7 @@ urldff = "https://raw.githubusercontent.com/track-research-bd/road-accident-data
 dff = pd.read_csv(urldff)
 
 #st.write(dff)
-# Assuming 'dff' is DataFrame
-csv = dff.to_csv(index=False).encode()  # convert DataFrame to CSV and then encode to utf-8
 
-st.download_button(
-    label="Download data as CSV",
-    data=csv,
-    file_name="mydata.csv",
-    mime="text/csv",
-)
 
 district_id_map = {}
 for feature in geojson_data["features"]:
@@ -58,6 +50,37 @@ dff['id'] = dff.District.apply(lambda x: district_id_map.get(x, default_value))
 
 #dff.to_csv('final_output.csv', index=False)
 final_data = copy.deepcopy(dff)
+
+##### radio but to visualize the data
+final_data['ACCIDENT Date'] = pd.to_datetime(final_data['ACCIDENT Date'])
+# Filter out data before 2020
+final_data = final_data[final_data['ACCIDENT Date'].dt.year >= 2020]
+
+# Add a 'year' column to the data
+final_data['year'] = final_data['ACCIDENT Date'].dt.year
+
+# Create a radio button for selecting the chart type
+chart_type = st.radio("Select chart type:", ('Daily Accidents', 'Cumulative Accidents', 'Yearly Accidents'))
+
+if chart_type == 'Daily Accidents':
+    # Group by date and calculate the sum of accidents
+    daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
+    st.line_chart(daily_accidents.set_index('ACCIDENT Date'))
+
+elif chart_type == 'Cumulative Accidents':
+    # Group by date and calculate the sum of accidents
+    daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
+    # Calculate the cumulative sum of accidents
+    daily_accidents['Cumulative Accidents'] = daily_accidents['Accidents'].cumsum()
+    st.line_chart(daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
+
+elif chart_type == 'Yearly Accidents':
+    # Group by year and calculate the sum of accidents
+    yearly_accidents = final_data.groupby('year')['Accidents'].sum().reset_index()
+    st.bar_chart(yearly_accidents.set_index('year'))
+
+
+
 
 # final_data
 
@@ -388,32 +411,7 @@ if 'Accidents' in filtered_data:
 else:
     st.error('No data found !')
 
-final_data['ACCIDENT Date'] = pd.to_datetime(final_data['ACCIDENT Date'])
-# Filter out data before 2020
-final_data = final_data[final_data['ACCIDENT Date'].dt.year >= 2020]
 
-# Add a 'year' column to the data
-final_data['year'] = final_data['ACCIDENT Date'].dt.year
-
-# Create a radio button for selecting the chart type
-chart_type = st.radio("Select chart type:", ('Daily Accidents', 'Cumulative Accidents', 'Yearly Accidents'))
-
-if chart_type == 'Daily Accidents':
-    # Group by date and calculate the sum of accidents
-    daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
-    st.line_chart(daily_accidents.set_index('ACCIDENT Date'))
-
-elif chart_type == 'Cumulative Accidents':
-    # Group by date and calculate the sum of accidents
-    daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
-    # Calculate the cumulative sum of accidents
-    daily_accidents['Cumulative Accidents'] = daily_accidents['Accidents'].cumsum()
-    st.line_chart(daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
-
-elif chart_type == 'Yearly Accidents':
-    # Group by year and calculate the sum of accidents
-    yearly_accidents = final_data.groupby('year')['Accidents'].sum().reset_index()
-    st.bar_chart(yearly_accidents.set_index('year'))
 
 
 # Group by date and calculate the sum of accidents
@@ -438,3 +436,12 @@ st.line_chart(filtered_daily_accidents.set_index('ACCIDENT Date'))
 st.line_chart(filtered_daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
 
 
+# Assuming 'dff' is DataFrame
+csv = dff.to_csv(index=False).encode()  # convert DataFrame to CSV and then encode to utf-8
+
+st.download_button(
+    label="Download data as CSV",
+    data=csv,
+    file_name="mydata.csv",
+    mime="text/csv",
+)
