@@ -221,7 +221,7 @@ if time_period == "Daily":
 
 if 'Accidents' in filtered_data:
     with row1_col3:
-        total_accidents = filtered_data['Accidents'].count()
+        total_accidents = filtered_data['Accidents'].len()
         total_deaths=filtered_data['Accidents'].sum()
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("Total accident", total_accidents, total_accidents)
