@@ -260,22 +260,37 @@ if 'Accidents' in filtered_data:
         year_counts = final_data['year'].value_counts()
         # Calculate total accidents over all years
         total_accidents_all_years = year_counts.sum()
+        
+        # Calculate total deaths over all years
+        total_deaths_all_years = final_data['Accidents'].sum()
+        
+        # Calculate total deaths for the current year
+        total_deaths_current_year = filtered_data['Accidents'].sum()
+        
+        # Calculate the sum of accidents for each year
+        accidents_per_year = final_data.groupby('year')['Accidents'].sum()
+
         if y != final_data['year'].min():
             diff_accidents = year_counts.get(y, 0) - year_counts.get(y-1, 0)
+            # Calculate the difference in total deaths between the current year and the previous year
+            diff_total_deaths = accidents_per_year.get(y, 0) - accidents_per_year.get(y-1, 0)
         else:
             diff_accidents = 0
+            diff_total_deaths = 0
             
-        # Calculate total deaths
-        total_deaths = filtered_data['Accidents'].sum()
+        # Get the location with the highest number of accidents
+        highest_accident_location = final_data['LOCATION'].value_counts().index[0]
 
         # Display the metrics
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("Total accident", total_accidents_all_years, int(diff_accidents))
-        col2.metric("Total deaths", total_deaths, total_deaths)
-        col3.metric("Total injured", "86%", "4 %")
-        col4.metric("Highest accident location", "86%", "4 %")
+        col2.metric("Total deaths", total_deaths_all_years, int(diff_total_deaths))
+        col3.metric("Highest accident location", highest_accident_location, "+1") 
+        col4.metric("Total injured", "86%", "4 %")
+
 
         st.markdown('</div>', unsafe_allow_html=True)
+
 
     with row7_col1:
         # st.info("Deaths density by locations:")
