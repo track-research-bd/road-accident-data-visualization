@@ -387,3 +387,31 @@ if 'Accidents' in filtered_data:
 
 else:
     st.error('No data found !')
+
+
+# Convert 'ACCIDENT Date' to datetime if it isn't already
+final_data['ACCIDENT Date'] = pd.to_datetime(final_data['ACCIDENT Date'])
+
+# Group by date and calculate the sum of accidents
+daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
+
+# Create the chart
+st.line_chart(daily_accidents.set_index('ACCIDENT Date'))
+
+# Calculate the cumulative sum of accidents
+daily_accidents['Cumulative Accidents'] = daily_accidents['Accidents'].cumsum()
+
+# Create the chart
+st.line_chart(daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
+# Let the user select a date range
+start_date = st.date_input('Start date', daily_accidents['ACCIDENT Date'].min())
+end_date = st.date_input('End date', daily_accidents['ACCIDENT Date'].max())
+
+# Filter the data based on the selected range
+filtered_daily_accidents = daily_accidents[(daily_accidents['ACCIDENT Date'] >= start_date) & (daily_accidents['ACCIDENT Date'] <= end_date)]
+
+# Create the charts
+st.line_chart(filtered_daily_accidents.set_index('ACCIDENT Date'))
+st.line_chart(filtered_daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
+
+
