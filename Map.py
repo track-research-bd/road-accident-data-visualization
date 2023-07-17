@@ -109,7 +109,7 @@ row8_col1, row8_col2, row8_col3 = st.columns(
 # --------------------------------------------------------------------------------
 with row1_col1:
     time_period = st.selectbox(
-        "Select time period:", ["Daily", "Weekly", "Monthly", "Yearly"])
+        "Select time period:", ["Yearly","Monthly","Weekly","Daily" ])
 
 
 def year_func(yy):
@@ -158,13 +158,13 @@ def day_func(yy, mm, dd):
 
 if time_period == "Yearly":
     with row2_col1:
-        year = st.slider("Select year:", 2020, 2023, 2020)
+        year = st.slider("Select year:", 2020, 2023, 2021)
     y = year
     filtered_data = year_func(y)
 
 if time_period == "Monthly":
     with row2_col1:
-        year = st.slider("Select year:", 2020, 2023, 2020)
+        year = st.slider("Select year:", 2020, 2023, 2021)
     with row2_col2:
         month = st.slider("Select month:", 1, 12, 11)
     y = year
@@ -185,7 +185,7 @@ if time_period == "Weekly":
 
 if time_period == "Daily":
     with row4_col1:
-        year = st.slider("Select year:", 2020, 2023, 2020)
+        year = st.slider("Select year:", 2020, 2023, 2021)
     with row4_col2:
         month = st.slider("Select month:", 1, 12, 11)
     with row4_col3:
