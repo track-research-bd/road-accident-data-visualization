@@ -26,8 +26,8 @@ st.markdown("## Road Accident Dashboard of Bangladesh")
 #    open('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/bangladesh_geojson_adm2_64_districts_zillas.json', 'r'))
 
 # Get the json file from github
-url = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/bangladesh_geojson_adm2_64_districts_zillas.json"
-response = requests.get(url)
+url1 = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/bangladesh_geojson_adm2_64_districts_zillas.json"
+response = requests.get(url1)
 # Decode the json file
 geojson_data = response.json()
 
@@ -36,10 +36,10 @@ geojson_data = response.json()
 geojson_data['features'][61].keys()
 
 @st.cache_data(ttl=60*60) # ttl of one hour to keep memory in cache
-def fetch_and_clean_data(url):
+def fetch_and_clean_data(url2):
     # Fetch data from URL here, and then clean it up.
-    dff = pd.read_csv(url)
-    return data
+    df_data = pd.read_csv(url2)
+    return df_data
 DATA_URL_2="https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/final_report.csv"
 dff = fetch_and_clean_data(DATA_URL_2)
 
