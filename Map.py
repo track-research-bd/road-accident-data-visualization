@@ -81,8 +81,16 @@ final_data = final_data[final_data['ACCIDENT Date'].dt.year >= 2020]
 # Add a 'year' column to the data
 final_data['year'] = final_data['ACCIDENT Date'].dt.year
 
+# Find the latest date
+latest_date = final_data['ACCIDENT Date'].max()
+
+# Display the latest update
+st.write(f"Last updated on: {latest_date.strftime('%B %d, %Y')}")
+
 # Create a radio button for selecting the chart type
 chart_type = st.radio("Select chart type:", ('Daily Deaths', 'Cumulative Deaths', 'Yearly Deaths', 'Vehicles Involved'))
+
+
 
 if chart_type == 'Daily Deaths':
     # Group by date and calculate the sum of accidents
