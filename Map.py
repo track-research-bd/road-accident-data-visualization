@@ -20,7 +20,7 @@ from io import StringIO
 st.set_page_config(layout="wide")
 st.markdown("## Road Accident Dashboard of Bangladesh")
 
-@st.cache_data(ttl=60*60) # ttl of one hour to keep memory in cache
+
 
 #geojson_data = load(
 #    open('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/bangladesh_geojson_adm2_64_districts_zillas.json', 'r'))
@@ -34,9 +34,19 @@ geojson_data = response.json()
 #st. json(geojson_data)
 
 geojson_data['features'][61].keys()
+
+@st.cache_data(ttl=60*60) # ttl of one hour to keep memory in cache
+def fetch_and_clean_data(url):
+    # Fetch data from URL here, and then clean it up.
+    dff = pd.read_csv(url)
+    return data
+DATA_URL_2="https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/final_report.csv"
+dff = fetch_and_clean_data(DATA_URL_2)
+
+
 #dff = pd.read_csv('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/final_report.csv')
-urldff = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/final_report.csv"
-dff = pd.read_csv(urldff)
+#urldff = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/final_report.csv"
+#dff = pd.read_csv(urldff)
 
 #st.write(dff)
 
