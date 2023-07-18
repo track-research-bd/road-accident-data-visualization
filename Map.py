@@ -47,9 +47,12 @@ def fetch_and_clean_data(url2):
     
     default_value = None
     df_data['id'] = df_data.District.apply(lambda x: district_id_map.get(x, default_value))
+    # Rename the 'Killed NUMBER' column to 'Accidents'
+    df_data = df_data.rename(columns={'Killed NUMBER': 'Accidents'})
     
-    # Define the columns that you want to consider when removing duplicates
-    cols_to_consider = ['LOCATION','ACCIDENT Date', 'Accidents', 'Vehicle 1', 'Vehicle 2', 'Vehicle 3']
+    # Define the columns that you want to consider when removing duplicates , 'Vehicle 3' 
+    #'Killed NUMBER' used in the datapipeline code
+    cols_to_consider = ['LOCATION','ACCIDENT Date', 'Accidents', 'Vehicle 1', 'Vehicle 2']
     
     # Remove duplicates based on the defined columns
     df_data = df_data.drop_duplicates(subset=cols_to_consider)
@@ -59,8 +62,9 @@ def fetch_and_clean_data(url2):
     
     return df_data
 DATA_URL_2="https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/final_report.csv"
-dff = fetch_and_clean_data(DATA_URL_2)
-
+DATA_URL_3_data_pipeline="https://raw.githubusercontent.com/track-research-bd/road-accident-tracking-data-pipeline-build/main/Accident.csv"
+#dff = fetch_and_clean_data(DATA_URL_2)
+dff = fetch_and_clean_data(DATA_URL_3_data_pipeline)
 
 #dff = pd.read_csv('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/final_report.csv')
 #urldff = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/final_report.csv"
