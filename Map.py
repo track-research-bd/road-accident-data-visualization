@@ -49,7 +49,7 @@ def fetch_and_clean_data(url2):
     df_data['id'] = df_data.District.apply(lambda x: district_id_map.get(x, default_value))
     
     # Define the columns that you want to consider when removing duplicates
-    cols_to_consider = ['ACCIDENT Date', 'Accidents', 'Vehicle 1', 'Vehicle 2', 'Vehicle 3']
+    cols_to_consider = ['LOCATION','ACCIDENT Date', 'Accidents', 'Vehicle 1', 'Vehicle 2', 'Vehicle 3']
     
     # Remove duplicates based on the defined columns
     df_data = df_data.drop_duplicates(subset=cols_to_consider)
