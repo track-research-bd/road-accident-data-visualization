@@ -18,7 +18,7 @@ from io import StringIO
 
 
 st.set_page_config(layout="wide")
-
+st.markdown("## Road Accident Dashboard of Bangladesh")
 
 
 #geojson_data = load(
