@@ -39,6 +39,24 @@ geojson_data['features'][61].keys()
 def fetch_and_clean_data(url2):
     # Fetch data from URL here, and then clean it up.
     df_data = pd.read_csv(url2)
+
+    district_id_map = {}
+    for feature in geojson_data["features"]:
+        feature["id"] = feature["id"]
+        district_id_map[feature["properties"]["ADM2_EN"]] = feature["id"]
+    
+    default_value = None
+    df_data['id'] = dff.District.apply(lambda x: district_id_map.get(x, default_value))
+    
+    # Define the columns that you want to consider when removing duplicates
+    cols_to_consider = ['ACCIDENT Date', 'Accidents', 'Vehicle 1', 'Vehicle 2', 'Vehicle 3']
+    
+    # Remove duplicates based on the defined columns
+    df_data = df_data.drop_duplicates(subset=cols_to_consider)
+    
+    # Reset index after dropping duplicates
+    df_data.reset_index(drop=True, inplace=True)
+    
     return df_data
 DATA_URL_2="https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/final_report.csv"
 dff = fetch_and_clean_data(DATA_URL_2)
@@ -47,19 +65,10 @@ dff = fetch_and_clean_data(DATA_URL_2)
 #dff = pd.read_csv('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/final_report.csv')
 #urldff = "https://raw.githubusercontent.com/track-research-bd/road-accident-data-visualization/main/final_report.csv"
 #dff = pd.read_csv(urldff)
-
+#dff.to_csv('final_output.csv', index=False)
 #st.write(dff)
 
 
-district_id_map = {}
-for feature in geojson_data["features"]:
-    feature["id"] = feature["id"]
-    district_id_map[feature["properties"]["ADM2_EN"]] = feature["id"]
-
-default_value = None
-dff['id'] = dff.District.apply(lambda x: district_id_map.get(x, default_value))
-
-#dff.to_csv('final_output.csv', index=False)
 final_data = copy.deepcopy(dff)
 
 
