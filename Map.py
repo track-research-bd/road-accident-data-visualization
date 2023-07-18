@@ -20,6 +20,7 @@ from io import StringIO
 st.set_page_config(layout="wide")
 st.markdown("## Road Accident Dashboard of Bangladesh")
 
+@st.cache_data(ttl=60*60) # ttl of one hour to keep memory in cache
 
 #geojson_data = load(
 #    open('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/bangladesh_geojson_adm2_64_districts_zillas.json', 'r'))
