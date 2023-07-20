@@ -20,13 +20,7 @@ from io import StringIO
 st.set_page_config(layout="wide")
 st.markdown("## Road Accident Dashboard of Bangladesh")
 
-with open('stylesimple.css') as f:
-    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
-col1.metric("Temperature", "70 °F", "1.2 °F")
-col2.metric("Wind", "9 mph", "-8%")
-col3.metric("Humidity", "86%", "4%")
 
 #geojson_data = load(
 #    open('https://github.com/track-research-bd/road-accident-data-visualization/blob/main/bangladesh_geojson_adm2_64_districts_zillas.json', 'r'))
