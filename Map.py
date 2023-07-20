@@ -92,41 +92,13 @@ latest_date = final_data['ACCIDENT Date'].max()
 # Display the latest update
 st.write(f"Last updated on: {latest_date.strftime('%B %d, %Y')}")
 
-# Create a radio button for selecting the chart type
-chart_type = st.radio("Select chart type:", ('Daily Deaths', 'Cumulative Deaths', 'Yearly Deaths', 'Vehicles Involved'))
 
 
 
-if chart_type == 'Daily Deaths':
-    # Group by date and calculate the sum of accidents
-    daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
-    st.line_chart(daily_accidents.set_index('ACCIDENT Date'))
 
-elif chart_type == 'Cumulative Deaths':
-    # Group by date and calculate the sum of accidents
-    daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
-    # Calculate the cumulative sum of accidents
-    daily_accidents['Cumulative Accidents'] = daily_accidents['Accidents'].cumsum()
-    st.line_chart(daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
 
-elif chart_type == 'Yearly Deaths':
-    # Group by year and calculate the sum of accidents
-    yearly_accidents = final_data.groupby('year')['Accidents'].sum().reset_index()
-    st.bar_chart(yearly_accidents.set_index('year'))
 
-elif chart_type == 'Vehicles Involved':
-    # Combine the vehicle columns into a single series
-    vehicle_data = pd.concat([final_data['Vehicle 1'], final_data['Vehicle 2'], final_data['Vehicle 3']]).dropna()
-    
-    # Count the number of occurrences of each vehicle
-    vehicle_counts = vehicle_data.value_counts().sort_values(ascending=False)
 
-    # Create a dataframe for streamlit bar_chart
-    vehicle_df = pd.DataFrame(vehicle_counts).reset_index()
-    vehicle_df.columns = ['Vehicle', 'Count']
-
-    # Create a bar chart using Streamlit
-    st.bar_chart(vehicle_df.set_index('Vehicle'))
 
 # final_data
 
@@ -289,51 +261,51 @@ if time_period == "Daily":
 
 
 if 'Accidents' in filtered_data:
-    with row1_col3:
-        year_counts = final_data['year'].value_counts()
-        # Calculate total accidents over all years
-        total_accidents_all_years = year_counts.sum()
+    #with row1_col3:
+    year_counts = final_data['year'].value_counts()
+    # Calculate total accidents over all years
+    total_accidents_all_years = year_counts.sum()
+    
+    # Calculate total deaths over all years
+    total_deaths_all_years = final_data['Accidents'].sum()
+    
+    # Calculate total deaths for the current year
+    total_deaths_current_year = filtered_data['Accidents'].sum()
+    
+    # Calculate the sum of accidents for each year
+    accidents_per_year = final_data.groupby('year')['Accidents'].sum()
+    
+    if y != final_data['year'].min():
+        diff_accidents = year_counts.get(y, 0) - year_counts.get(y-1, 0)
+        # Calculate the difference in total deaths between the current year and the previous year
+        diff_total_deaths = accidents_per_year.get(y, 0) - accidents_per_year.get(y-1, 0)
+    else:
+        diff_accidents = 0
+        diff_total_deaths = 0
         
-        # Calculate total deaths over all years
-        total_deaths_all_years = final_data['Accidents'].sum()
-        
-        # Calculate total deaths for the current year
-        total_deaths_current_year = filtered_data['Accidents'].sum()
-        
-        # Calculate the sum of accidents for each year
-        accidents_per_year = final_data.groupby('year')['Accidents'].sum()
-
-        if y != final_data['year'].min():
-            diff_accidents = year_counts.get(y, 0) - year_counts.get(y-1, 0)
-            # Calculate the difference in total deaths between the current year and the previous year
-            diff_total_deaths = accidents_per_year.get(y, 0) - accidents_per_year.get(y-1, 0)
-        else:
-            diff_accidents = 0
-            diff_total_deaths = 0
-            
-        # Get the location with the highest number of accidents
-        highest_accident_location = final_data['LOCATION'].value_counts().index[0]
-        # Filter the data for the current year
-        filtered_data_current_year = final_data[final_data['year'] == y]
-        
-        # Get the location with the highest accidents for the current year
-        highest_accident_location_current_year = filtered_data_current_year['LOCATION'].value_counts().index[0]
-        
-        # Check if the location has changed
-        if highest_accident_location == highest_accident_location_current_year:
-            delta_location = "No change"
-        else:
-            delta_location = highest_accident_location_current_year
-
-        # Display the metrics
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Total accident", total_accidents_all_years, int(diff_accidents))
-        col2.metric("Total deaths", total_deaths_all_years, int(diff_total_deaths))
-        col3.metric("Highest accident location", highest_accident_location, delta_location)
-        col4.metric("Total injured", "86%", "4 %")
-
-
-        st.markdown('</div>', unsafe_allow_html=True)
+    # Get the location with the highest number of accidents
+    highest_accident_location = final_data['LOCATION'].value_counts().index[0]
+    # Filter the data for the current year
+    filtered_data_current_year = final_data[final_data['year'] == y]
+    
+    # Get the location with the highest accidents for the current year
+    highest_accident_location_current_year = filtered_data_current_year['LOCATION'].value_counts().index[0]
+    
+    # Check if the location has changed
+    if highest_accident_location == highest_accident_location_current_year:
+        delta_location = "No change"
+    else:
+        delta_location = highest_accident_location_current_year
+    
+    # Display the metrics
+    with open('stylesimple.css') as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Total accident", total_accidents_all_years, int(diff_accidents))
+    col2.metric("Total deaths", total_deaths_all_years, int(diff_total_deaths))
+    col3.metric("Highest accident location", highest_accident_location, delta_location)
+    col4.metric("Total injured", "86", "4")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
     with row7_col1:
@@ -478,7 +450,41 @@ if 'Accidents' in filtered_data:
 else:
     st.error('No data found !')
 
+# Create a radio button for selecting the chart type
+chart_type = st.radio("Select chart type:", ('Daily Deaths', 'Cumulative Deaths', 'Yearly Deaths', 'Vehicles Involved'))
 
+
+
+if chart_type == 'Daily Deaths':
+    # Group by date and calculate the sum of accidents
+    daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
+    st.line_chart(daily_accidents.set_index('ACCIDENT Date'))
+
+elif chart_type == 'Cumulative Deaths':
+    # Group by date and calculate the sum of accidents
+    daily_accidents = final_data.groupby('ACCIDENT Date')['Accidents'].sum().reset_index()
+    # Calculate the cumulative sum of accidents
+    daily_accidents['Cumulative Accidents'] = daily_accidents['Accidents'].cumsum()
+    st.line_chart(daily_accidents.set_index('ACCIDENT Date')['Cumulative Accidents'])
+
+elif chart_type == 'Yearly Deaths':
+    # Group by year and calculate the sum of accidents
+    yearly_accidents = final_data.groupby('year')['Accidents'].sum().reset_index()
+    st.bar_chart(yearly_accidents.set_index('year'))
+
+elif chart_type == 'Vehicles Involved':
+    # Combine the vehicle columns into a single series
+    vehicle_data = pd.concat([final_data['Vehicle 1'], final_data['Vehicle 2'], final_data['Vehicle 3']]).dropna()
+    
+    # Count the number of occurrences of each vehicle
+    vehicle_counts = vehicle_data.value_counts().sort_values(ascending=False)
+
+    # Create a dataframe for streamlit bar_chart
+    vehicle_df = pd.DataFrame(vehicle_counts).reset_index()
+    vehicle_df.columns = ['Vehicle', 'Count']
+
+    # Create a bar chart using Streamlit
+    st.bar_chart(vehicle_df.set_index('Vehicle'))
 
 
 # Group by date and calculate the sum of accidents
