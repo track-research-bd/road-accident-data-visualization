@@ -256,12 +256,7 @@ if time_period == "Daily":
 
 # ==================================================================
 
-
-# =========================================================
-
-
-if 'Accidents' in filtered_data:
-    with row5_col1:
+with row5_col1:
         year_counts = final_data['year'].value_counts()
         # Calculate total accidents over all years
         total_accidents_all_years = year_counts.sum()
@@ -306,8 +301,10 @@ if 'Accidents' in filtered_data:
         col3.metric("Highest accident location", highest_accident_location, delta_location)
         col4.metric("Total injured", "86", "4")
         #st.markdown('</div>', unsafe_allow_html=True)
+# =========================================================
 
 
+if 'Accidents' in filtered_data:
     with row7_col1:
         # st.info("Deaths density by locations:")
         colorscale = [
