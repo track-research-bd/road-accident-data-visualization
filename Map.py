@@ -305,7 +305,7 @@ if 'Accidents' in filtered_data:
         col2.metric("Total deaths", total_deaths_all_years, int(diff_total_deaths))
         col3.metric("Highest accident location", highest_accident_location, delta_location)
         col4.metric("Total injured", "86", "4")
-        st.markdown('</div>', unsafe_allow_html=True)
+        #st.markdown('</div>', unsafe_allow_html=True)
 
 
     with row7_col1:
