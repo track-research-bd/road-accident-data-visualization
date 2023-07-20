@@ -146,7 +146,7 @@ row4_col1, row4_col2, row4_col3, row4_col4 = st.columns(
     [0.5, 0.5, 0.5, 1.5]
 )
 row5_col1,row5_col2 = st.columns(
-    [3,0.1]
+    [3,0.5]
 )
 
 row6_col1, row6_col2, row6_col3 = st.columns(
