@@ -265,7 +265,7 @@ with row5_col1:
         total_deaths_all_years = final_data['Accidents'].sum()
         
         # Calculate total deaths for the current year
-        total_deaths_current_year = filtered_data['Accidents'].sum()
+        #total_deaths_current_year = filtered_data['Accidents'].sum()
         
         # Calculate the sum of accidents for each year
         accidents_per_year = final_data.groupby('year')['Accidents'].sum()
