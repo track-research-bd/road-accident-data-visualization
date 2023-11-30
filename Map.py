@@ -369,7 +369,7 @@ if 'Accidents' in filtered_data:
             "#7E191B", "#800517"
         ]
         m = folium.Map(location=[23.6850, 90.3563],
-                       zoom_start=7, width="%60", height="%100")
+                       zoom_start=7, width="60%", height="100%")
         grouped_data = filtered_data.groupby(
             'LOCATION')['Accidents'].sum().reset_index()
         max_accidents = grouped_data['Accidents'].max()
